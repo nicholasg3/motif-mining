@@ -22,7 +22,9 @@ class Motif_Discovery(object):
 	# @param D, list, time series
 	# @param tempLen, the length of the Template to Discover
 	# @param r, the minimum dsitance between two motifs to be considered
+	# returns the beginning index of the two most similar motifs
 	def MK_Motif(self, D,R, tempLen = 30):
+		R = min(R,1000)
 		best_so_far = 999999999.0
 		D = np.array(D)
 		m = len(D)-tempLen # the number of time series to compare
@@ -74,7 +76,7 @@ class Motif_Discovery(object):
 							break
 						elif i == 1:
 							abandon = False
-				if reject == False:
+				if reject == False and j + offset < len(I):
 					check_d = self.distance(D[I[j]:(I[j]+tempLen)],D[I[j+offset]:(I[j+offset]+tempLen)])
 					# print "check_d: " + `check_d`
 					if check_d < best_so_far and I[j]!=I[j+offset]:
